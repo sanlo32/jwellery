@@ -1,1 +1,6 @@
 gunicorn
+pathlib
+os
+sys
+django
+decimal
