@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORATHUR JEWELLERS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400&display=swap');
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .star {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-yellow-50 to-yellow-100 text-gray-800 p-4 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto max-w-4xl">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-yellow-800 mb-2 font-['Playfair_Display']">PORATHUR JEWELLERS</h1>
+            <p class="text-xl text-yellow-700 font-['Roboto'] font-light">Precise billing for your precious treasures</p>
+        </header>
+        
+        <div class="bg-white shadow-2xl rounded-lg p-8 mb-8">
+            <form class="mb-8 flex justify-center" action="{% url 'search_bill' %}" method="GET">
+                <input type="number" name="q" placeholder="Enter Bill ID" class="w-2/3 px-4 py-2 border border-yellow-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-500 font-['Roboto']" required>
+                <button type="submit" class="bg-yellow-500 text-white px-6 py-2 rounded-r-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div class="flex flex-col sm:flex-row justify-between gap-4">
+                    <button type="submit" name="include_tax" value="on" class="w-full sm:w-1/2 bg-yellow-500 text-white py-3 px-6 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 font-['Roboto'] font-medium text-lg">
+                        <i class="fas fa-receipt mr-2"></i> Create Bill with Tax
+                    </button>
+                    <button type="submit" name="include_tax" value="off" class="w-full sm:w-1/2 bg-gray-200 text-gray-800 py-3 px-6 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-300 font-['Roboto'] font-medium text-lg">
+                        <i class="fas fa-file-invoice-dollar mr-2"></i> Create Bill without Tax
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <footer class="text-center text-yellow-700 font-['Roboto'] font-light">
+            <p>&copy; 2024 PORATHUR Jewellers. All rights reserved.</p>
+        </footer>
+        <div class="stars-container text-center text-yellow-700 font-['Roboto'] font-light">
+            <span class="star">&bigstar;</span>
+            <span class="star">&bigstar;</span>
+            <span class="star">&bigstar;</span>
+            <span class="star">&bigstar;</span>
+            <span class="star">&bigstar;</span>
+        </div>
+    </div>
+</body>
+</html>

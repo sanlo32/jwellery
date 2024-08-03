@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - ABC Jewellers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap');
+    </style>
+</head>
+<body class="bg-gradient-to-r from-yellow-50 to-yellow-100 text-gray-800 py-8 font-['Roboto']">
+    <div class="container mx-auto max-w-6xl px-4">
+        <h1 class="text-4xl font-['Playfair_Display'] font-bold text-center text-yellow-800 mb-8">Search Results</h1>
+
+        {% if query %}
+            <h2 class="text-xl font-semibold text-yellow-700 mb-6">Search Results for "{{ query }}"</h2>
+        {% endif %}
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-yellow-100">
+                            <th class="p-4 text-left font-semibold text-yellow-800">Bill ID</th>
+                            <th class="p-4 text-left font-semibold text-yellow-800">Date</th>
+                            <th class="p-4 text-left font-semibold text-yellow-800">Customer Details</th>
+                            <th class="p-4 text-left font-semibold text-yellow-800">Total Amount</th>
+                            <th class="p-4 text-left font-semibold text-yellow-800">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bill in bills %}
+                        <tr class="border-b border-yellow-200 hover:bg-yellow-50 transition duration-300">
+                            <td class="p-4">{{ bill.id }}</td>
+                            <td class="p-4">{{ bill.date }}</td>
+                            <td class="p-4">{{ bill.customer_details }}</td>
+                            <td class="p-4">₹{{ bill.total_amount }}</td>
+                            <td class="p-4">
+                                <a href="{% url 'print_bill' bill.id 'True' %}" class="text-yellow-600 hover:text-yellow-800 font-medium transition duration-300">
+                                    <i class="fas fa-eye mr-2"></i>View
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-500">No bills found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="{% url 'product_selection' %}" class="bg-yellow-500 text-white py-3 px-6 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300 inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Product Selection
+            </a>
+        </div>
+    </div>
+</body>
+</html>

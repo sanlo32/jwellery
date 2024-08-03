@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Bill - ABC Jewellers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500&display=swap');
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background-color: #f59e0b; /* yellow-500 */
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .file-input-wrapper:hover {
+            background-color: #d97706; /* yellow-600 */
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0; 
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-yellow-50 to-yellow-100 text-gray-800 py-8 font-['Roboto']">
+    <div class="container mx-auto px-4 max-w-full">
+        <h1 class="text-center text-4xl font-['Playfair_Display'] font-bold text-yellow-800 mb-8">Create Bill</h1>
+        <a href="{% url 'product_selection' %}" class="inline-block mb-6 text-yellow-700 hover:text-yellow-900 transition duration-300">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Home
+        </a>
+        <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-lg">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="customer_details" class="block font-medium mb-2 text-yellow-800">Customer Details:</label>
+                    <input type="text" name="customer_details" id="customer_details" class="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                </div>
+                {% if inc == 'True' %}
+    
+                <div>
+                    <label for="gst_number" class="block font-medium mb-2 text-yellow-800">GST Number:</label>
+                    <input type="text" name="gst_number" id="gst_number" class="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                </div>
+                {% endif %}
+                <div>
+                    <label for="hsn_code" class="block font-medium mb-2 text-yellow-800">HSN Code:</label>
+                    <input type="text" name="hsn_code" id="hsn_code" class="w-full px-3 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                </div>
+            </div>
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full table-auto">
+                    <thead>
+                        <tr class="bg-yellow-100">
+                            <th class="px-4 py-2 text-left text-yellow-800">Product Name</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Quality</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Price</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Quantity</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Gross Weight</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">HUID</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Stone Weight</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Net Weight</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Ornament Value</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Value Addition</th>
+                            <th class="px-4 py-2 text-left text-yellow-800">Stone Charge</th>
+                            <!-- <th class="px-4 py-2 text-left text-yellow-800">Product Image</th> -->
+                            <th class="px-4 py-2 text-left text-yellow-800">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body">
+                        <tr class="product-row">
+                            <td class="border px-4 py-2"><input type="text" name="productname[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required></td>
+                            <td class="border px-4 py-2"><input type="text" name="description[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required></td>
+                            <td class="border px-2 py-2"><input type="number" name="price[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.01" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="quantity[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="gross_weight[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.001" required></td>
+                            <td class="border px-4 py-2"><input type="text" name="huid[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"  minlength="6" maxlength="6" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="stone_weight[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.001" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="net_weight[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.001" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="ornament_value[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.01" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="value_addition[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.01" required></td>
+                            <td class="border px-4 py-2"><input type="number" name="stone_charge[]" class="w-full px-2 py-1 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" step="0.01" required></td>
+                            <!-- <td class="border px-4 py-2">
+                                <div class="file-input-wrapper">
+                                    <i class="fas fa-upload mr-2"></i>Upload
+                                    <input type="file" name="propic[]" class="file-input" required>
+                                </div>
+                            </td> -->
+                            <td class="border px-4 py-2 text-center">
+                                <button type="button" class="remove-row bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between gap-4">
+                <button type="button" id="add-row" class="add-row bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition duration-300">
+                    <i class="fas fa-plus mr-2"></i>Add Product
+                </button>
+                <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition duration-300">
+                    <i class="fas fa-file-invoice mr-2"></i>Generate Bill
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('add-row').addEventListener('click', function () {
+            const tableBody = document.getElementById('product-table-body');
+            const newRow = tableBody.rows[0].cloneNode(true);
+            const inputs = newRow.getElementsByTagName('input');
+            for (let input of inputs) {
+                input.value = '';
+            }
+            tableBody.appendChild(newRow);
+
+            // Add event listener to the new remove button
+            newRow.querySelector('.remove-row').addEventListener('click', function () {
+                if (document.querySelectorAll('.product-row').length > 1) {
+                    newRow.remove();
+                } else {
+                    alert('You cannot delete the last row');
+                }
+            });
+        });
+
+        // Add event listener to the existing remove button
+        document.querySelectorAll('.remove-row').forEach(button => {
+            button.addEventListener('click', function () {
+                if (document.querySelectorAll('.product-row').length > 1) {
+                    this.closest('tr').remove();
+                } else {
+                    alert('You cannot delete the last row');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
